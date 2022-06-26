@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header id="navbar">
+    </header>
+    <button>
+        <a href="./dashboard.html">Dashboard</a>
+    </button>
+    <h1>Add studend data</h1>
+    <form id="student" onsubmit="studentData(event)">
+    <input  id="name" type="text" placeholder="name">
+    <input id="course" type="text" placeholder="course">
+    <input id="unit" type="number" placeholder="unit">
+    <input id="image" type="text" placeholder="image">
+    <input id="web" type="number" placeholder="Ft web no">
+    <input type="submit">
+    </form>
+
+</body>
+</html>
+<script>
+    function studentData(e){
+        e.preventDefault()
+        let form=document.getElementById("student");
+        let name=form.name.value;
+        let course=form.course.value;
+        let unit=form.unit.value;
+        let image=form.image.value;
+        let web=form.web.value;
+        let ifo=new MassaiStud(name,course,unit,image,web);
+        let arr=JSON.parse(localStorage.getItem("students"))||[];
+        arr.push(ifo);
+        localStorage.setItem("students",JSON.stringify(arr)); 
+    }
+    function MassaiStud(a,b,c,d,e){
+        this.name=a;
+        this.course=b;
+        this.unit=c;
+        this.image=d;
+        this.web=`ft-web ${e}`
+    }
+    function calculate(){
+       let arr=JSON.parse(localStorage.getItem("students"))||[]; 
+       let obj={};
+       for(let i=0;i<arr.length;i++){
+        if(!obj[arr[i].web]){
+            obj[arr[i].web]=0;
+        }
+       }
+       for(let i=0;i<arr.length;i++){
+        obj[arr[i].web]++;
+       }
+    
+            let h=document.createElement("h1");
+             h.innerHTML=Object.entries(obj);
+             console.log(obj)
+             document.querySelector("#navbar").append(h)
+    
+    }
+    calculate();
+    
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

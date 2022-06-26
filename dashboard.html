@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header id="navbar"></header>
+    <h1><a href="./index.html">Homepage</a></h1>
+    <div id="cont"></div>
+</body>
+</html>
+<script>
+    function append(){
+       let container=document.getElementById("cont");
+       container.innerHTML=null;
+        let arr=JSON.parse(localStorage.getItem("students"))||[];
+        arr.forEach(function(el,index){
+            let div=document.createElement("div")
+            let img=document.createElement("img")
+            img.src=el.image;
+            let name=document.createElement("p");
+            name.innerText=el.name
+            let course=document.createElement("p");
+            course.innerText=el.course;
+            let web=document.createElement("p");
+            web.innerText=el.web;
+            let unit=document.createElement("p");
+            unit.innerText=el.unit;
+            let but=document.createElement("button");
+           but.innerText="remove"
+            but.addEventListener("click",function(){
+            remove(index);
+           })
+            div.append(img,name,course,web,unit,but);
+            document.querySelector("#cont").append(div)
+            
+        });
+    }
+    append();
+    function remove(index){
+        let arr=JSON.parse(localStorage.getItem("students"))||[];
+        let arr1=arr.filter(function(el,i){
+            if(i===index){ 
+            let trash= JSON.parse(localStorage.getItem("trash"))||[];
+        trash.push(el);
+        localStorage.setItem("trash",JSON.stringify(trash));   
+        }else{ 
+            return i !== index;
+        }
+        });
+        localStorage.setItem("students",JSON.stringify(arr1));
+    append()
+    }
+    function calculate(){
+       let arr=JSON.parse(localStorage.getItem("students"))||[]; 
+       let obj={};
+       for(let i=0;i<arr.length;i++){
+        if(!obj[arr[i].web]){
+            obj[arr[i].web]=0;
+        }
+       }
+       for(let i=0;i<arr.length;i++){
+        obj[arr[i].web]++;
+       }
+    
+            let h=document.createElement("h1");
+             h.innerHTML=Object.entries(obj);
+             console.log(obj)
+             document.querySelector("#navbar").append(h)
+    
+    }
+    calculate();
+</script>
